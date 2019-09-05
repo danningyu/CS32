@@ -1,4 +1,4 @@
-//Danning Yu, 305087992
+//Danning Yu
 //CS32 Project 2
 
 #ifndef SEQUENCE_H
