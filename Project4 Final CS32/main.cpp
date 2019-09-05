@@ -49,7 +49,6 @@ bool getInt(istream& inf, int& n);
 string istreamToStr(istream &in);
 
 void createDiff(istream& fold, istream& fnew, ostream& fdiff) {
-	//high_resolution_clock::time_point t1Func = high_resolution_clock::now();
 	hash<string> hashFunc;
 	if (!fold || !fnew) {
 		//file can't be opened
