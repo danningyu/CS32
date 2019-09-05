@@ -2,7 +2,6 @@
 #define BOARD_H
 #include "Side.h"
 
-//need to implement copy constructor and assignment operator!!!
 class Board {
 public:
 	Board(int nHoles, int nInitialBeansPerHole);
