@@ -1,8 +1,3 @@
-//no #include directives, 
-//no using namespace std; , 
-//no implementation of somePredicate and no main routine.
-
-//need to check for bad parameters?
 //#include <string>
 //#include <cassert>
 //#include <iostream>
