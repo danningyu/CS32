@@ -2,15 +2,12 @@
 #include "Sequence.h"
 
 Sequence::Sequence():m_size(0){ //default constructor
-	// std::cerr << "CONSTRUCTOR CALLED" << std::endl;
 	dum = new Node; //new node allocated, make sure to DELETE!!
 	dum->m_next = dum; //circular list
 	dum->m_prev = dum;
-	// head = dum; //head pointer points to the dummy Node
 }
 
 Sequence::Sequence(const Sequence& otherSeq){
-	// std::cerr << "COPY CONSTRUCTOR CALLED" << std::endl;
 	m_size = 0; //reset size
 	dum = new Node; //new node allocated, make sure to DELETE!!	
 	dum->m_next = dum; //circular list
@@ -21,21 +18,17 @@ Sequence::Sequence(const Sequence& otherSeq){
 		insert(m_size, temp->m_value);
 		temp = temp->m_next;
 	}
-	// std::cerr << "After copy constructor, size is " <<m_size << std::endl;
 }
 Sequence::~Sequence() {
-	// std::cerr << "DESTRUCTOR CALLED" << std::endl;
 	while (erase(0)) {}
 	delete dum; //delete the dummy node
 }
 Sequence& Sequence::operator=(const Sequence& rhs) {
-	// std::cerr << "ASSIGNMENT OPERATOR CALLED" << std::endl;
 	if (this != &rhs) { //not referring to the same sequence
 		while (erase(0)) {} //erase the original nodes
 		Sequence temp = rhs; //in case rhs is the same as this
 		swap(temp);
 	}
-	// std::cerr << "After swap, size of sequence is " << m_size << std::endl;
 	return *this;
 }
 bool Sequence::empty() const { //DONE
@@ -86,20 +79,16 @@ int Sequence::insert(int pos, const ItemType& value) {
 // if pos is equal to size(), the value is inserted at the end.
 
 int Sequence::insert(const ItemType& value) {
-	// std::cerr << "INSERT, ONE PARAMETER CALLED" << std::endl;
 	Node* temp = dum->m_next; //point to 0th element
 	int p = -1;
 	for (int i = 0; i < m_size; i++) {		
 		if (value <= temp->m_value) {
-			// std::cerr << "VALUE FOUND" << std::endl;
 			p = i;
-			// std::cerr << "POS IS" << p << std::endl;
 			break;
 		}
 		temp = temp->m_next; //go to the next node
 	}
 	if (p == -1) {
-		// std::cerr << "VALUE NOT FOUND" << std::endl;
 		p = m_size;
 	}
 	insert(p, value);
@@ -141,14 +130,12 @@ int Sequence::remove(const ItemType& value) {
 			temp = temp->m_next; //move temp to the next value so that it isn't pointing to nothing
 			erase(i);
 			i--; //lower index to account for reduction of # of items
-			// std::cerr << "REMOVING ITEM AT POSITION" << i << std::endl;
 			counter++;
 		}
 		else {
 			temp = temp->m_next; //move on to the next pointer
 		}
 	}
-	// std::cerr << "REMOVED " << counter << "ITEMS" << std::endl;
 	return counter;
 }
 // Erase all items from the sequence that == value.  Return the
@@ -188,7 +175,6 @@ int Sequence::find(const ItemType& value) const {
 	Node* temp = dum->m_next;
 	for (int i = 0; i < m_size; i++) {
 		if (temp->m_value == value) {
-			// std::cerr << "FOUND THE VALUE AT POS" << i << std::endl;
 			return i;
 		}
 		temp = temp->m_next;
@@ -202,8 +188,7 @@ int Sequence::find(const ItemType& value) const {
 void Sequence::swap(Sequence& other) {
 	int tempSize = m_size; //swap sizes
 	m_size = other.m_size;
-	other.m_size = tempSize;
-	// std::cerr << "Size of sequence after swapping currently" << m_size << std::endl;	
+	other.m_size = tempSize;	
 	Node* tempNext = dum->m_next;
 	Node* tempPrev = dum->m_prev;
 	(dum->m_prev)->m_next = other.dum; //redirect m_next pointer of last item in sequence
@@ -214,26 +199,11 @@ void Sequence::swap(Sequence& other) {
 	dum->m_prev = other.dum->m_prev;
 	other.dum->m_next = tempNext; //redirect other.dum's pointers
 	other.dum->m_prev = tempPrev;
-	// std::cerr << "DONE SWAPPING" << std::endl;
 }
 // Exchange the contents of this sequence with the other one.
 
-/*
-void Sequence::dump() {
-	Node* temp = dum->m_next;
-	for (int i = 0; i < m_size; i++) {
-		std::cerr << temp->m_value <<", ";
-		temp = temp->m_next;
-	}
-	std::cerr << std::endl;
-}
-*/
-
-
 int subsequence(const Sequence& seq1, const Sequence& seq2) {
-	// std::cerr << "SUBSEQUENCE BEING CALLED" << std::endl;
 	if (seq2.empty() == true || seq2.size() > seq1.size()) {
-		// std::cerr << "SEQ2 IS EMPTY OR SEQ1 IS SMALLER THAN SEQ2" << std::endl;
 		return -1;
 	}
 	bool found = false;
@@ -242,17 +212,12 @@ int subsequence(const Sequence& seq1, const Sequence& seq2) {
 	seq2.get(0, temp2); //set temp to first value in seq2
 	int startPos = -1; //impossible value
 	for (int i = 0; i < seq1.size(); i++) {
-		// std::cerr << "I IS CURRENTLY " << i << std::endl;
-		// std::cerr << "OUTER FOR LOOP" << std::endl;
 		seq1.get(i, temp1);
 		if (temp2 == temp1) { //first item in sequence matches!!
-			// std::cerr << "MATCH FOUND" << std::endl;
 			for (int j = i; j < i + seq2.size(); j++) { //then check if the rest of the items match
-				// std::cerr << "J IS CURRENTLY " << j << std::endl;
 				seq1.get(j, temp1);
 				seq2.get(j - i, temp2);
 				if (temp1 != temp2) { //if the two items aren't equal
-					// std::cerr << "ENTIRE SEQUENCE ISN'T EQUAL" << std::endl;
 					break;
 				}
 				//but if all the items in seq2 match elements starting from i in seq1
@@ -264,20 +229,17 @@ int subsequence(const Sequence& seq1, const Sequence& seq2) {
 		}
 		seq2.get(0, temp2); //reset temp2 to 0th value again for the next iteration
 		if (found == true) { //element has been found, no need to loop any more
-			// std::cerr << "SUBSEQ FOUND" << std::endl;
 			break;
 		}
 	}
 	if (found == true) { //if it found one
 		return startPos;
 	}
-	// std::cerr << "NO MATCH FOUND" << std::endl;
 	return -1; //temp
 }
 //want to find starting position in seq1 where the subsequence seq2 appears
 
 void interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result) {
-	// std::cerr << "CALLING INTERLEAVE" << std::endl;
 	Sequence tempSeq; //if result is the same as seq1 or seq2
 	ItemType temp1, temp2; //temp item holders for items from seq1 and seq2
 	if (seq1.empty() == true && seq2.empty() == true) {
@@ -296,39 +258,28 @@ void interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result) {
 	}
 	int equalSizeAt = -1; //some temp value
 	if (seq2.size() > seq1.size()) {
-		// std::cerr << "SEQ2 bigger than SEQ1" << std::endl;
 		equalSizeAt = seq1.size();
 	}
 	else if (seq2.size() <= seq1.size()) {
-		// std::cerr << "seq1 bigger than seq2" << std::endl;
 		equalSizeAt = seq2.size();
 	}
 	for (int i = equalSizeAt-1; i >=0; i--) { //produce the interwoven list
-		// std::cerr << "Making the interwoven list" << std::endl;
 		seq2.get(i, temp2); //work backwards to insert items
 		seq1.get(i, temp1);
 		tempSeq.insert(0, temp2);
 		tempSeq.insert(0, temp1);
 	}
-	// std::cerr << "Equal size at " << equalSizeAt << std::endl;
 	if (seq2.size() > seq1.size()) { //take care of leftover seq2 elements
-		// std::cerr << "Taking care of the leftovers of seq2" << std::endl;
 		for (int i = equalSizeAt; i < seq2.size(); i++) {
-			// std::cerr << i << std::endl;
 			seq2.get(i, temp2);			
 			tempSeq.insert(tempSeq.size(), temp2);
 		}
 	}
 	else if (seq2.size() < seq1.size()) { //take care of leftover seq1 elements
-		// std::cerr << "Taking care of the leftovers of seq1" << std::endl;
 		for (int i = equalSizeAt; i < seq1.size(); i++) {
-			// std::cerr << "ADDING ELEMENTS FROM POSITION: " << i << std::endl;
 			seq1.get(i, temp1);
 			tempSeq.insert(tempSeq.size(), temp1);
 		}
 	}
-	// std::cerr << "SIZE OF TEMP SEQUENCE: " << tempSeq.size() << std::endl;
-	// tempSeq.dump();
 	result = tempSeq;
-	// std::cerr << "ASSIGNMENT SUCCESSSFUL" << std::endl;
 }
